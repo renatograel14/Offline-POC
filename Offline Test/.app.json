@@ -4,13 +4,84 @@
     {
       "type": "kendo-ui-mobile:view",
       "name": "home",
-      "components": [],
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "name",
+                  "title": "Name",
+                  "inputType": "text",
+                  "titlePosition": "left",
+                  "dataBinding": "FirstName"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "city",
+                  "title": "City",
+                  "inputType": "text",
+                  "titlePosition": "left",
+                  "placeholder": "Type here ...",
+                  "dataBinding": "City"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "country",
+                  "title": "Country",
+                  "inputType": "text",
+                  "titlePosition": "left",
+                  "placeholder": "Type here ...",
+                  "dataBinding": "Country"
+                },
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "surname",
+                  "title": "Surname",
+                  "inputType": "text",
+                  "titlePosition": "left",
+                  "placeholder": "Type here ...",
+                  "dataBinding": "LastName"
+                }
+              ],
+              "name": "editableListForm6",
+              "formType": "add"
+            }
+          ],
+          "name": "homeModel",
+          "dataProvider": "offlineTest",
+          "collection": "dbo_Employees",
+          "headerField": "FirstName",
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": false,
+          "detailHeaderFieldSource": "static",
+          "detailHeaderFieldValue": "Detail",
+          "addItemForm": true,
+          "addScreenHeaderValue": "Create",
+          "editItemForm": false
+        }
+      ],
       "title": "Home View",
       "addToNavigation": true,
       "icon": "home"
     }
   ],
-  "dataProviders": [],
+  "dataProviders": [
+    {
+      "type": "kendo-ui-mobile:dataProvider",
+      "name": "offlineTest",
+      "title": "Offline Test / Offline Test",
+      "source": "everlive",
+      "everliveKey": "1cg3oe3sjbajlbfr",
+      "offlineStorage": true
+    }
+  ],
   "name": "kendoUiMobileApp",
   "navigation": "tabstrip",
   "view": "home",
