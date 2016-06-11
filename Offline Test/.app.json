@@ -4,13 +4,40 @@
     {
       "type": "kendo-ui-mobile:view",
       "name": "home",
-      "components": [],
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [],
+          "name": "homeModel",
+          "dataProvider": "jsonDataProvider",
+          "collection": "",
+          "headerField": "ProductName",
+          "isMapView": false,
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": false,
+          "detailHeaderFieldSource": "static",
+          "detailHeaderFieldValue": "Detail",
+          "addItemForm": false,
+          "editItemForm": false
+        }
+      ],
       "title": "Home View",
       "addToNavigation": true,
       "icon": "home"
     }
   ],
-  "dataProviders": [],
+  "dataProviders": [
+    {
+      "type": "kendo-ui-mobile:dataProvider",
+      "name": "jsonDataProvider",
+      "title": "JSON Data Service",
+      "source": "json",
+      "url": "https://demos.telerik.com/kendo-ui/service/products"
+    }
+  ],
   "name": "kendoUiMobileApp",
   "navigation": "tabstrip",
   "view": "home",
