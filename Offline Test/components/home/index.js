@@ -123,6 +123,9 @@ app.home = kendo.observable({
                 app.mobileApp.navigate('#components/home/details.html?uid=' + dataItem.uid);
 
             },
+            addClick: function() {
+                app.mobileApp.navigate('#components/home/add.html');
+            },
             detailsShow: function(e) {
                 homeModel.setCurrentItemByUid(e.view.params.uid);
             },
@@ -156,6 +159,30 @@ app.home = kendo.observable({
             },
             currentItem: {}
         });
+
+    parent.set('addItemViewModel', kendo.observable({
+        onShow: function(e) {
+            // Reset the form data.
+            this.set('addFormData', {
+                productName: '',
+            });
+        },
+        onSaveClick: function(e) {
+            var addFormData = this.get('addFormData'),
+                addModel = {
+                    ProductName: addFormData.productName,
+                },
+                filter = homeModel && homeModel.get('paramFilter'),
+                dataSource = homeModel.get('dataSource');
+
+            dataSource.add(addModel);
+            dataSource.one('change', function(e) {
+                app.mobileApp.navigate('#:back');
+            });
+
+            dataSource.sync();
+        }
+    }));
 
     if (typeof dataProvider.sbProviderReady === 'function') {
         dataProvider.sbProviderReady(function dl_sbProviderReady() {

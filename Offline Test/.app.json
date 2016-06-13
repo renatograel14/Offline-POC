@@ -9,7 +9,25 @@
           "type": "kendo-ui-mobile:editableList",
           "listExtraFields": [],
           "detailExtraFields": [],
-          "components": [],
+          "components": [
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "productName",
+                  "dataBindingRelationChildren": "[]",
+                  "title": "ProductName",
+                  "inputType": "text",
+                  "titlePosition": "left",
+                  "placeholder": "Type here ...",
+                  "dataBinding": "ProductName"
+                }
+              ],
+              "name": "editableListForm2",
+              "formType": "add"
+            }
+          ],
           "name": "homeModel",
           "dataProvider": "jsonDataProvider",
           "collection": "",
@@ -20,7 +38,8 @@
           "deleteItemButton": false,
           "detailHeaderFieldSource": "static",
           "detailHeaderFieldValue": "Detail",
-          "addItemForm": false,
+          "addItemForm": true,
+          "addScreenHeaderValue": "Create",
           "editItemForm": false
         }
       ],
