@@ -46,6 +46,52 @@
       "title": "Home View",
       "addToNavigation": true,
       "icon": "home"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "masterDetailView",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [
+                {
+                  "type": "kendo-ui-mobile:editableListFormField",
+                  "name": "firstName",
+                  "dataBindingRelationChildren": "[]",
+                  "title": "FirstName",
+                  "inputType": "text",
+                  "titlePosition": "left",
+                  "placeholder": "Type here ...",
+                  "dataBinding": "FirstName"
+                }
+              ],
+              "name": "editableListForm8",
+              "formType": "add"
+            }
+          ],
+          "name": "masterDetailViewModel",
+          "dataProvider": "offlineTest",
+          "collection": "dbo_Employees",
+          "headerField": "FirstName",
+          "isMapView": false,
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": false,
+          "detailHeaderFieldSource": "static",
+          "detailHeaderFieldValue": "Detail",
+          "addItemForm": true,
+          "addScreenHeaderValue": "Create",
+          "editItemForm": false
+        }
+      ],
+      "title": "Master Detail",
+      "addToNavigation": true,
+      "icon": "organize"
     }
   ],
   "dataProviders": [
@@ -55,6 +101,14 @@
       "title": "JSON Data Service",
       "source": "json",
       "url": "https://demos.telerik.com/kendo-ui/service/products"
+    },
+    {
+      "type": "kendo-ui-mobile:dataProvider",
+      "name": "offlineTest",
+      "title": "Offline Test / Offline Test",
+      "source": "everlive",
+      "everliveKey": "1cg3oe3sjbajlbfr",
+      "offlineStorage": true
     }
   ],
   "name": "kendoUiMobileApp",
