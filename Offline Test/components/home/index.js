@@ -9,6 +9,10 @@ app.home = kendo.observable({
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_home
+
+
+// START_CUSTOM_CODE_homeModel
+// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 (function(parent) {
     var dataProvider = app.data.jsonDataProvider,
         fetchFilteredData = function(paramFilter, searchFilter) {
@@ -42,30 +46,51 @@ app.home = kendo.observable({
             return img;
         },
         dataSourceOptions = {
-            type: 'json',
+            offlineStorage: "offline-kendo-demo",
             transport: {
-                read: {
-                    url: dataProvider.url
-                }
-            },
-            error: function(e) {
-
-                if (e.xhr) {
-                    alert(JSON.stringify(e.xhr));
-                }
-            },
-            schema: {
-                data: '',
-                model: {
-                    fields: {
-                        'ProductName': {
-                            field: 'ProductName',
-                            defaultValue: ''
-                        },
+                read:  {
+                    url: "https://demos.telerik.com/kendo-ui/service/products",
+                    dataType: "jsonp"
+                },
+                update: {
+                    url: "https://demos.telerik.com/kendo-ui/service/products/update",
+                    dataType: "jsonp"
+                },
+                destroy: {
+                    url: "https://demos.telerik.com/kendo-ui/service/products/destroy",
+                    dataType: "jsonp"
+                },
+                create: {
+                    url: "https://demos.telerik.com/kendo-ui/service/products/create",
+                    dataType: "jsonp"
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {models: kendo.stringify(options.models)};
                     }
                 }
             },
-            serverFiltering: true,
+            requestStart: function(e) {
+                if (e.type != "read") {
+                    console.log(kendo.format("Request start ({0})", e.type));
+                }
+            },
+            requestEnd: function(e) {
+                if (e.type != "read") {
+                    console.log(kendo.format("Request end ({0})", e.type));
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "ProductID",
+                    fields: {
+                        ProductID: { editable: false, nullable: true },
+                        ProductName: {  nullable: true },
+                     }
+                }
+            }
         },
         dataSource = new kendo.data.DataSource(dataSourceOptions),
         homeModel = kendo.observable({
@@ -123,11 +148,11 @@ app.home = kendo.observable({
                 app.mobileApp.navigate('#components/home/details.html?uid=' + dataItem.uid);
 
             },
-            addClick: function() {
-                app.mobileApp.navigate('#components/home/add.html');
-            },
             detailsShow: function(e) {
                 homeModel.setCurrentItemByUid(e.view.params.uid);
+            },
+            addClick: function() {
+                app.mobileApp.navigate('#components/home/add.html');
             },
             setCurrentItemByUid: function(uid) {
                 var item = uid,
@@ -160,6 +185,14 @@ app.home = kendo.observable({
             currentItem: {}
         });
 
+    if (typeof dataProvider.sbProviderReady === 'function') {
+        dataProvider.sbProviderReady(function dl_sbProviderReady() {
+            parent.set('homeModel', homeModel);
+        });
+    } else {
+        parent.set('homeModel', homeModel);
+    }
+
     parent.set('addItemViewModel', kendo.observable({
         onShow: function(e) {
             // Reset the form data.
@@ -169,29 +202,19 @@ app.home = kendo.observable({
         },
         onSaveClick: function(e) {
             var addFormData = this.get('addFormData'),
-                addModel = {
-                    ProductName: addFormData.productName,
-                },
-                filter = homeModel && homeModel.get('paramFilter'),
-                dataSource = homeModel.get('dataSource');
+            addModel = {
+                ProductName: addFormData.productName,
+            },
+            filter = homeModel && homeModel.get('paramFilter'),
+            dataSource = homeModel.get('dataSource');
 
-            dataSource.add(addModel);
+            dataSource.insert(addModel);
             dataSource.one('change', function(e) {
                 app.mobileApp.navigate('#:back');
             });
-
             dataSource.sync();
         }
     }));
-
-    if (typeof dataProvider.sbProviderReady === 'function') {
-        dataProvider.sbProviderReady(function dl_sbProviderReady() {
-            parent.set('homeModel', homeModel);
-        });
-    } else {
-        parent.set('homeModel', homeModel);
-    }
-
     parent.set('onShow', function(e) {
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
@@ -211,9 +234,14 @@ app.home = kendo.observable({
         fetchFilteredData(param);
     });
 
+    document.addEventListener('online', function _appOnline() {
+        dataSource.online(true);
+    });
+
+    document.addEventListener('offline', function _appOffline() {
+        dataSource.online(false);
+    });
+
+
 })(app.home);
-
-// START_CUSTOM_CODE_homeModel
-// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
-
 // END_CUSTOM_CODE_homeModel
